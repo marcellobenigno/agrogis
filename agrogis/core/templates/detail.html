@@ -23,7 +23,7 @@
             <li><strong>Proprietário:</strong>
                 {{ imovel_rural.proprietario.nome }} {{ imovel_rural.proprietario.sobrenome }}</li>
             <li><strong>Culturas:</strong>--</li>
-            <li><strong>Área (ha):</strong>--</li>
+            <li><strong>Área (ha):</strong> {{ area_ha|floatformat:2 }}</li>
             <li><strong>Município:</strong> {{ municipio }}</li>
         </ul>
 

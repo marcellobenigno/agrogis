@@ -25,9 +25,16 @@ def search(request):
 def detail(request, pk):
     imovel_rural = ImovelRural.objects.get(pk=pk)
     municipio = Municipio.objects.get(geom__contains=imovel_rural.geom.centroid)
-
+    area_ha = get_area_ha(pk)
     context = {
         'imovel_rural': imovel_rural,
         'municipio': municipio,
+        'area_ha': area_ha
     }
     return render(request, 'detail.html', context)
+
+
+def get_area_ha(pk):
+    sql = """SELECT id, ST_Area(geom :: GEOGRAPHY)/10000 AS area_ha FROM core_imovelrural WHERE id = {}""".format(pk)
+    result = ImovelRural.objects.raw(sql)
+    return result[0].area_ha
