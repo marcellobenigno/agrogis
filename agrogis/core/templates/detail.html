@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}AgroGIS - Mais Informações{% endblock title %}
+
+{% block extras_assets %}
+    <link href="{% static 'libs/leaflet/leaflet.css' %}" rel="stylesheet">
+{% endblock extras_assets %}
 
 {% block content %}
     <div class="col-md-12">
@@ -8,9 +13,7 @@
             <h1>Imóvel Rural - {{ imovel_rural.nome }}</h1>
         </div>
 
-        <a href="#" class="thumbnail">
-            <img src="http://placehold.it/1200x450" alt="mapa">
-        </a>
+        <div id="map-detail"></div>
 
         <hr>
 
@@ -32,3 +35,75 @@
 
     </div><!-- /.col-md-12 -->
 {% endblock content %}
+
+{% block extras_js %}
+    <script src="{% static 'libs/leaflet/leaflet.js' %}"></script>
+    <script>
+
+        var geoserver_url = "http://localhost:8080/geoserver/agrogis/wms";
+
+        var imoveis_rurais = L.tileLayer.wms(geoserver_url, {
+            layers: 'agrogis:core_imovelrural',
+            format: 'image/png',
+            transparent: true,
+            attribution: "AgroGIS &copy;"
+        });
+
+        var safra = L.tileLayer.wms(geoserver_url, {
+            layers: 'agrogis:core_safra',
+            format: 'image/png',
+            transparent: true,
+            attribution: "AgroGIS &copy;"
+        });
+
+        var municipio = L.tileLayer.wms(geoserver_url, {
+            layers: 'agrogis:core_municipio',
+            format: 'image/png',
+            transparent: true,
+            attribution: "AgroGIS &copy;"
+        });
+
+        var imovel_rural_json = '{{ imovel_rural.geom.geojson|safe}}';
+
+        var myStyle = {
+            fillColor: "yellow",
+            color: "yellow",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.3
+        };
+
+        var imovel = L.geoJson(JSON.parse(imovel_rural_json), {style: myStyle});
+
+        var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+        var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+            streets = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr});
+
+        var map = L.map('map-detail', {
+            center: [-20.10623, -52.09579],
+            zoom: 10,
+            layers: [streets, imovel, imoveis_rurais]
+        });
+
+        map.fitBounds(imovel.getBounds());
+
+        var baseLayers = {
+            "Grayscale": grayscale,
+            "Streets": streets
+        };
+
+        var overlays = {
+            "Imóveis Rurais": imoveis_rurais,
+            "Safra": safra,
+            "Municípios": municipio,
+            "Imóvel Selecioado": imovel
+        };
+
+        L.control.layers(baseLayers, overlays).addTo(map);
+    </script>
+
+{% endblock extras_js %}

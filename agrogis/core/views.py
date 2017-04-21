@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 from .models import ImovelRural, Municipio, Safra
 
 
@@ -27,6 +28,6 @@ def detail(request, pk):
 
     context = {
         'imovel_rural': imovel_rural,
-        'municipio': municipio
+        'municipio': municipio,
     }
     return render(request, 'detail.html', context)
