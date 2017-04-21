@@ -77,7 +77,11 @@
                     <tr>
                         <td>{{ imovel.nome }}</td>
                         <td>{{ imovel.proprietario.nome }} {{ imovel.proprietario.sobrenome }}</td>
-                        <td></td>
+                        {% for plantacao in plantacoes %}
+                            {% if imovel.id == plantacao.id %}
+                                <td>{{ plantacao.culturas|join:' - ' }}</td>
+                            {% endif %}
+                        {% endfor %}
                         <td>
                             <a href="{% url 'detail' imovel.id %}">
                                 <span class="glyphicon glyphicon-eye-open"></span>

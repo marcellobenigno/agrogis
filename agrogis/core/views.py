@@ -12,11 +12,20 @@ def webgis(request):
 
 
 def search(request):
-    imoveis_rurais = ImovelRural.objects.all()
+    imoveis_rurais = ImovelRural.objects.all()[0:10]
     areas_plantadas = Safra.objects.all()
+    plantacoes = []
+    for imovel_rural in imoveis_rurais:
+        item = {'id': imovel_rural.id, 'culturas': []}
+        for area_plantada in areas_plantadas:
+            if imovel_rural.geom.intersects(area_plantada.geom):
+                if not area_plantada.ms_ucs in item['culturas']:
+                    item['culturas'].append(area_plantada.ms_ucs)
+        plantacoes.append(item)
+
     context = {
         'imoveis_rurais': imoveis_rurais,
-        'areas_plantadas': areas_plantadas
+        'plantacoes': plantacoes
     }
 
     return render(request, 'search.html', context)
