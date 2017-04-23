@@ -5,7 +5,7 @@ class ImovelRural(models.Model):
     cod_incra = models.CharField('cód. do INCRA', max_length=254)
     nome = models.CharField('nome', max_length=254)
     certidao = models.CharField('certidão', max_length=254)
-    dt_certif = models.DateField('data da certificação', max_length=254)
+    dt_certif = models.CharField('data da certificação', max_length=254)
     proprietario = models.ForeignKey('Proprietario', verbose_name='proprietário')
     geom = models.MultiPolygonField('geom', srid=4326)
 

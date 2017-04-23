@@ -9,7 +9,7 @@ imovelrural_mapping = {
     'nome': 'nome',
     'certidao': 'certidao',
     'dt_certif': 'dt_certif',
-    'prop_id': 'prop_id',
+    'proprietario': 'prop_id',
     'geom': 'MULTIPOLYGON',
 }
 
@@ -27,8 +27,8 @@ safra_mapping = {
     'geom': 'MULTIPOLYGON',
 }
 
-data_dir = os.path.abspath(os.path.join('core', 'data')) + '/'
+# data_dir = os.path.abspath(os.path.join('core', 'data')) + '/'
 
-lm1 = LayerMapping(ImovelRural, data_dir + 'imoveis_rurais.shp', imovelrural_mapping)
-lm2 = LayerMapping(Municipio, data_dir + 'municipios.shp', municipio_mapping)
-lm3 = LayerMapping(Safra, data_dir + 'safra_2016_verao.shp', safra_mapping)
+lm1 = LayerMapping(ImovelRural, 'agrogis/core/data/imoveis_rurais.shp', imovelrural_mapping)
+lm2 = LayerMapping(Municipio, 'agrogis/core/data/municipios.shp', municipio_mapping)
+lm3 = LayerMapping(Safra, 'agrogis/core/data/safra_2016_verao.shp', safra_mapping)
