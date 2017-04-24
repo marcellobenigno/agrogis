@@ -60,17 +60,3 @@ class Proprietario(models.Model):
         verbose_name = 'Proprietário'
         verbose_name_plural = 'Proprietários'
         ordering = ['nome']
-
-# class AreaPlantada(models.Model):
-#     cultura = models.CharField('Culturas', max_length=255)
-#     area_ha = models.DecimalField('área em hectares', max_digits=10, decimal_places=2)
-#     imovel_rural = models.ForeignKey('ImovelRural', verbose_name='imóvel rural')
-#     geom = models.MultiPolygonField('geom', srid=4326)
-#
-#     def __str__(self):
-#         return self.imovel_rural
-#
-#     class Meta:
-#         verbose_name = 'área plantada'
-#         verbose_name_plural = 'áreas plantadas'
-#         ordering = ['cultura']

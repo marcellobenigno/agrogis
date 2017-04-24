@@ -24,3 +24,6 @@ urlpatterns = [
     url(r'^detalhe/(?P<pk>\d+)$', views.detail, name='detail'),
     url(r'^admin/', admin.site.urls),
 ]
+
+
+
