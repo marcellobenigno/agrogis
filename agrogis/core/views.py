@@ -35,10 +35,17 @@ def detail(request, pk):
     imovel_rural = ImovelRural.objects.get(pk=pk)
     municipio = Municipio.objects.get(geom__contains=imovel_rural.geom.centroid)
     area_ha = get_area_ha(pk)
+    areas_plantadas = Safra.objects.filter(geom__intersects=imovel_rural.geom)
+    plantacoes = []
+    for area in areas_plantadas:
+        if not area.ms_ucs in plantacoes:
+            plantacoes.append(area.ms_ucs)
+
     context = {
         'imovel_rural': imovel_rural,
         'municipio': municipio,
-        'area_ha': area_ha
+        'area_ha': area_ha,
+        'plantacoes': plantacoes,
     }
     return render(request, 'detail.html', context)
 
