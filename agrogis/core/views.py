@@ -1,3 +1,4 @@
+from django.contrib.gis.geos import GEOSGeometry
 from django.shortcuts import render
 
 from .models import ImovelRural, Municipio, Safra
@@ -48,6 +49,17 @@ def detail(request, pk):
         'plantacoes': plantacoes,
     }
     return render(request, 'detail.html', context)
+
+
+def search_lnglat(request, lng, lat):
+    point = GEOSGeometry('POINT({} {})'.format(lng, lat))
+    imovel_rural = ImovelRural.objects.filter(geom__contains=point).first()
+
+    context = {
+        'imovel_rural': imovel_rural,
+    }
+
+    return render(request, 'search_lnglat.html', context)
 
 
 def get_area_ha(pk):

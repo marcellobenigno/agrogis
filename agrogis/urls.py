@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^webgis/$', views.webgis, name='webgis'),
     url(r'^pesquisar/$', views.search, name='search'),
     url(r'^detalhe/(?P<pk>\d+)$', views.detail, name='detail'),
+    url(r'^lnglat/(?P<lng>-\d+\.?\d+)/(?P<lat>-\d+\.?\d+)$', views.search_lnglat, name='search_lnglat'),
     url(r'^admin/', admin.site.urls),
 ]

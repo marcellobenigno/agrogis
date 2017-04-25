@@ -104,6 +104,21 @@
         };
 
         L.control.layers(baseLayers, overlays).addTo(map);
+
+        var popup = L.popup();
+
+        function onMapClick(e) {
+            var url_django = 'http://127.0.0.1:8000/lnglat/' + e.latlng.lng + '/' + e.latlng.lat
+            $.ajax({
+                url: url_django,
+                success: function (response) {
+                    popup.setLatLng(e.latlng).setContent(response).openOn(map)
+                }
+            });
+        }
+
+        map.on('click', onMapClick)
+    
     </script>
 
 {% endblock extras_js %}

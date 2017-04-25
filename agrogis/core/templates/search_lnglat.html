@@ -1,0 +1,14 @@
+{% if imovel_rural %}
+
+    <strong>Nome: </strong>
+    {{ imovel_rural.nome }}
+    <br>
+    <strong>Proprietário: </strong>
+    {{ imovel_rural.proprietario.nome }}
+    {{ imovel_rural.proprietario.sobrenome }} <br>
+    <a href="{% url 'detail' imovel_rural.pk %}"> Informações Adicionais</a>
+
+{% else %}
+    Aumente o Zoom e <br>
+    clique mais próximo do Imóvel Rural.
+{% endif %}
