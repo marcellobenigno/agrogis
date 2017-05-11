@@ -13,49 +13,7 @@
 
     <div class="row search">
 
-        <form>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="proprietario">Nome do Proprietário:</label>
-                    <input type="proprietario" class="form-control" id="proprietario"
-                           placeholder="Ex.: João dos Santos">
-                </div>
-            </div><!-- /.col-md-6 -->
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="cpf">CPF:</label>
-                    <input type="cpf" class="form-control" id="cpf" placeholder="Ex.: 12345678901">
-                </div>
-            </div><!-- /.col-md-6 -->
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="imovel_rural">Nome do Imóvel Rural:</label>
-                    <input type="imovel_rural" class="form-control" id="imovel_rural"
-                           placeholder="Ex.: Fazenda Alegria">
-                </div>
-            </div><!-- /.col-md-12 -->
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    <p>
-                        <label for="cultura">Culturas Plantadas:</label>
-                    </p>
-                    <input type="checkbox"> Algodão
-                    <input type="checkbox"> Cana de Açúcar
-                    <input type="checkbox"> Milho
-                    <input type="checkbox"> Feijão
-                    <input type="checkbox"> Soja
-                </div>
-            </div><!-- /.col-md-12 -->
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default btn-primary">Pesquisar</button>
-                </div>
-            </div><!-- /.col-md-12 -->
-        </form>
+        {% include 'includes/form.html' %}
 
     </div>
 
@@ -63,25 +21,23 @@
         <div class="col-md-12">
             <hr>
 
+            {% include 'includes/pagination.html' %}
+
             <table class="table table-hover table-striped">
                 <thead>
                 <tr>
                     <th>Imóvel Rural</th>
                     <th>Proprietário</th>
-                    <th>Culturas Plantadas</th>
+                    <th>CPF</th>
                     <th>Mais Informações</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for imovel in imoveis_rurais %}
+                {% for imovel in page_objects %}
                     <tr>
                         <td>{{ imovel.nome }}</td>
                         <td>{{ imovel.proprietario.nome }} {{ imovel.proprietario.sobrenome }}</td>
-                        {% for plantacao in plantacoes %}
-                            {% if imovel.id == plantacao.id %}
-                                <td>{{ plantacao.culturas|join:' - ' }}</td>
-                            {% endif %}
-                        {% endfor %}
+                        <td>{{ imovel.proprietario.cpf }}</td>
                         <td>
                             <a href="{% url 'detail' imovel.id %}">
                                 <span class="glyphicon glyphicon-eye-open"></span>
@@ -89,7 +45,6 @@
                         </td>
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
 

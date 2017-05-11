@@ -1,7 +1,10 @@
 from django.contrib.gis.geos import GEOSGeometry
 from django.shortcuts import render
 
+from .util.pagination_helper import my_pagination, my_range, total_search_itens
+
 from .models import ImovelRural, Municipio, Safra
+from .forms import SearchForm
 
 
 def home(request):
@@ -13,20 +16,32 @@ def webgis(request):
 
 
 def search(request):
-    imoveis_rurais = ImovelRural.objects.all()[0:10]
-    areas_plantadas = Safra.objects.all()
-    plantacoes = []
-    for imovel_rural in imoveis_rurais:
-        item = {'id': imovel_rural.id, 'culturas': []}
-        for area_plantada in areas_plantadas:
-            if imovel_rural.geom.intersects(area_plantada.geom):
-                if not area_plantada.ms_ucs in item['culturas']:
-                    item['culturas'].append(area_plantada.ms_ucs)
-        plantacoes.append(item)
+    form = SearchForm()
+    imoveis_rurais = ImovelRural.objects.all()
+    page = request.GET.get('page')
+
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            itens = form.cleaned_data
+            imoveis_rurais = ImovelRural.objects.filter(
+                nome__icontains=itens['nome'],
+                proprietario__nome__icontains=itens['proprietario'],
+                proprietario__cpf__icontains=itens['cpf']
+            )
+
+    result = imoveis_rurais.count()
+    page_objects = my_pagination(imoveis_rurais, page)
+    page_range = my_range(page_objects)
+
+    selection = total_search_itens(itens)
 
     context = {
-        'imoveis_rurais': imoveis_rurais,
-        'plantacoes': plantacoes
+        'page_objects': page_objects,
+        'page_range': page_range,
+        'result': result,
+        'selection': selection,
+        'form': form,
     }
 
     return render(request, 'search.html', context)

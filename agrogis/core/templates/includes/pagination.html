@@ -1,35 +1,39 @@
-{#<nav aria-label="...">#}
-{#    <ul class="pagination">#}
-{#        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>#}
-{#        </li>#}
-{#        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>#}
-{#        <li><a href="#">2 <span class="sr-only">2</span></a></li>#}
-{#        <li><a href="#">3 <span class="sr-only">3</span></a></li>#}
-{#        <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>#}
-{#        </li>#}
-{#    </ul>#}
-{#</nav>#}
-
 <ul class="pagination">
     {% if page_objects.has_previous %}
         <li>
-            <a href="?page={{ page_objects.previous_page_number }}">&laquo;</a>
+            <a href="?page={{ page_objects.previous_page_number }}
+{% if request.GET.proprietario %}&proprietario={{ request.GET.proprietario }}{% endif %}
+{% if request.GET.cpf %}&cpf={{ request.GET.cpf }}{% endif %}
+{% if request.GET.nome %}&nome={{ request.GET.nome }}{% endif %}
+">&laquo;</a>
         </li>
     {% endif %}
 
     {% for pg in page_range %}
         {% if page_objects.number == pg %}
-            <li class="active"><a href="?page={{ pg }}">{{ pg }}</a>
+            <li class="active"><a href="?page={{ pg }}
+{% if request.GET.proprietario %}&proprietario={{ request.GET.proprietario }}{% endif %}
+{% if request.GET.cpf %}&cpf={{ request.GET.cpf }}{% endif %}
+{% if request.GET.nome %}&nome={{ request.GET.nome }}{% endif %}
+">{{ pg }}</a>
             </li>
         {% else %}
-            <li><a href="?page={{ pg }}">{{ pg }}</a>
+            <li><a href="?page={{ pg }}
+{% if request.GET.proprietario %}&proprietario={{ request.GET.proprietario }}{% endif %}
+{% if request.GET.cpf %}&cpf={{ request.GET.cpf }}{% endif %}
+{% if request.GET.nome %}&nome={{ request.GET.nome }}{% endif %}
+">{{ pg }}</a>
             </li>
         {% endif %}
     {% endfor %}
 
     {% if page_objects.has_next %}
         <li>
-            <a href="?page={{ page_objects.next_page_number }}">&raquo;</a>
+            <a href="?page={{ page_objects.next_page_number }}
+{% if request.GET.proprietario %}&proprietario={{ request.GET.proprietario }}{% endif %}
+{% if request.GET.cpf %}&cpf={{ request.GET.cpf }}{% endif %}
+{% if request.GET.nome %}&nome={{ request.GET.nome }}{% endif %}
+">&raquo;</a>
         </li>
     {% endif %}
 </ul>
